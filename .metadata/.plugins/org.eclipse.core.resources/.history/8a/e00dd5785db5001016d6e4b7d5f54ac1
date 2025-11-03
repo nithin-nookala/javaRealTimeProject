@@ -1,0 +1,33 @@
+package com.orderApi.rest;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.orderApi.reponse.ApiResponse;
+import com.orderApi.reponse.PurchaseOrderResponse;
+import com.orderApi.request.PurchaseOrderRequest;
+import com.orderApi.service.OrderService;
+
+@RestController
+@RequestMapping("/api")
+public class OrderRestController {
+
+	@Autowired
+	private OrderService orderService;
+	
+	public ResponseEntity<ApiResponse<PurchaseOrderResponse>> createOrder(@RequestBody PurchaseOrderRequest orderrequest){
+		ApiResponse<PurchaseOrderResponse> response = new ApiResponse<>();
+		PurchaseOrderResponse orderRes = orderService.createOrder(orderrequest);
+		if(orderRes != null) {
+			response.setData(orderRes);
+			response.setMsg("order created");
+			response.setStatus(201);
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
+		}
+	}
+}

@@ -1,0 +1,56 @@
+package com.orderApi.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.orderApi.dto.AddressDto;
+import com.orderApi.dto.CustomerDto;
+import com.orderApi.dto.OrderDto;
+import com.orderApi.dto.OrderItemDto;
+import com.orderApi.dto.PaymentCallBackDto;
+import com.orderApi.entity.Customer;
+import com.orderApi.entity.Order;
+import com.orderApi.repo.AddressRepo;
+import com.orderApi.repo.CustomerRepo;
+import com.orderApi.repo.OrderItemRepo;
+import com.orderApi.repo.OrderRepo;
+import com.orderApi.reponse.PurchaseOrderResponse;
+import com.orderApi.request.PurchaseOrderRequest;
+@Service
+public class OrderServiceImpl implements OrderService {
+	@Autowired
+	private OrderRepo orderRepo;
+	@Autowired
+	private CustomerRepo customerRepo;
+	@Autowired
+	private OrderItemRepo orderItemRepo;
+	@Autowired
+	private AddressRepo addressRepo;
+	@Autowired
+	private RazorpayService razorpayService;
+
+	@Override
+	public PurchaseOrderResponse createOrder(PurchaseOrderRequest orderRequest) {
+		CustomerDto customer = orderRequest.getCustomer();
+		AddressDto address = orderRequest.getAddress();
+		OrderDto order = orderRequest.getOrder();
+		List<OrderItemDto> orderItems =orderRequest.getOrderItems();
+		Customer c = customerRepo 
+		return null;
+	}
+
+	@Override
+	public PurchaseOrderResponse updateOrder(PaymentCallBackDto paymentCallBackDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getOrdersByEmail(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

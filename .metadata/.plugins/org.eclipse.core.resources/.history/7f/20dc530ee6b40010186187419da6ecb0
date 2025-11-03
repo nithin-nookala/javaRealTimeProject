@@ -1,0 +1,5 @@
+package com.orderApi.repo;
+
+public interface OrderRepo {
+
+}

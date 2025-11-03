@@ -1,0 +1,5 @@
+package com.orderApi.service;
+
+public interface RazorpayService {
+
+}

@@ -1,0 +1,81 @@
+package com.orderApi.rest;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.orderApi.dto.OrderDto;
+import com.orderApi.dto.PaymentCallBackDto;
+import com.orderApi.reponse.ApiResponse;
+import com.orderApi.reponse.PurchaseOrderResponse;
+import com.orderApi.request.PurchaseOrderRequest;
+import com.orderApi.service.OrderService;
+
+@RestController
+@RequestMapping("/api/order")
+public class OrderRestController {
+
+	@Autowired
+	private OrderService orderService;
+	@PostMapping("/create")
+	public ResponseEntity<ApiResponse<PurchaseOrderResponse>> createOrder(@RequestBody PurchaseOrderRequest orderrequest){
+		ApiResponse<PurchaseOrderResponse> response = new ApiResponse<>();
+		PurchaseOrderResponse orderRes = orderService.createOrder(orderrequest);
+		if(orderRes != null) {
+			response.setData(orderRes);
+			response.setMsg("order created");
+			response.setStatus(201);
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
+		}
+		else {
+			response.setData(null);
+			response.setMsg("order creation failed");
+			response.setStatus(500);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@PutMapping("/update")
+	public ResponseEntity<ApiResponse<PurchaseOrderResponse>> updateOrder(@RequestBody PaymentCallBackDto callBackDto){
+		ApiResponse<PurchaseOrderResponse> response = new ApiResponse<>();
+		PurchaseOrderResponse orderRes = orderService.updateOrder(callBackDto);
+		if(orderRes != null) {
+			response.setData(orderRes);
+			response.setMsg("order updated");
+			response.setStatus(200);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		else {
+			response.setData(null);
+			response.setMsg("order creation failed");
+			response.setStatus(500);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@GetMapping("/getOrders/{email}")
+	public ResponseEntity<ApiResponse<List<OrderDto>>> getOrder(@PathVariable String email){
+		ApiResponse<List<OrderDto>> response = new ApiResponse<>();
+		List<OrderDto> ordersList = orderService.getOrdersByEmail(email);
+		if(!ordersList.isEmpty()) {
+			response.setData(ordersList);
+			response.setMsg("order created");
+			response.setStatus(201);
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
+		}
+		else {
+			response.setData(null);
+			response.setMsg("orders fetch failed");
+			response.setStatus(500);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+}

@@ -1,0 +1,17 @@
+package com.orderApi.service;
+
+import org.springframework.beans.factory.annotation.Value;
+
+public class RazorpayServiceImpl implements RazorpayService {
+
+	@Value("${razorpay.key.id}")
+	private String keyId;
+	@Value("${razorpay.key.secret}")
+	private String keysecret;
+	@Override
+	public String createRazorpayorder(Double amount) {
+		
+		return null;
+	}
+
+}

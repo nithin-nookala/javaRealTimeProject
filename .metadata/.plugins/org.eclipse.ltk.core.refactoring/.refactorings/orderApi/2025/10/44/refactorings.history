@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.orderApi.entity.dto&apos; to &apos;com.orderApi.dto&apos;&#x0D;&#x0A;- Original project: &apos;orderApi&apos;&#x0D;&#x0A;- Original element: &apos;orderApi/src/main/java/com.orderApi.entity.dto&apos;&#x0D;&#x0A;- Renamed element: &apos;orderApi/src/main/java/com.orderApi.dto&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings&#x0D;&#x0A;- Rename subpackages of the package" description="Rename package &apos;com.orderApi.entity.dto&apos;" flags="589830" hierarchical="true" id="org.eclipse.jdt.ui.rename.package" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.orderApi.entity.dto" name="com.orderApi.dto" qualified="false" references="true" stamp="1761744046248" textual="false" version="1.0"/>
+</session>

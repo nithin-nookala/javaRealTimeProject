@@ -1,0 +1,8 @@
+package com.orderApi.dto;
+
+public class PaymentCallBackDto {
+
+	private String razorpayOrderId;
+	private String raorpayPaymentId;
+	private String razorpaySignature;
+}
