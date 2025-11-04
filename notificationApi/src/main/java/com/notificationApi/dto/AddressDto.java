@@ -1,0 +1,13 @@
+package com.notificationApi.dto;
+
+import lombok.Data;
+
+@Data
+public class AddressDto {
+	
+	private Long addressId;
+	private String houseNum;
+	private String city;
+	private String state;
+	private String zipCode;
+}
