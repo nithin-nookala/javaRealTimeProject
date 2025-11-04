@@ -28,8 +28,10 @@ public class NotificationServiceImpl implements NotificationService {
 	private EmailService emailService; 
 	@Value("${wati.token}")
 	private String watiToken;
-	@Value("${wati.template.name}")
-	private String templateName;
+	@Value("${wati.template.delivery}")
+	private String deliveryTemplate;
+	@Value("${wati.template.pending}")
+	private String pendingTemplate;
 	@Value("${wati.endpoint.url}")
 	private String watiEndPointUrl;
 	
@@ -39,15 +41,20 @@ public class NotificationServiceImpl implements NotificationService {
 		List<Order> orders = orderRepo.findByDeliveryDate(LocalDate.now());
 		for(Order order: orders) {
 			Customer customer = order.getCustomer();
-			sendEmailNotification(customer.getEmail(), customer.getName(), order.getOrderTrackingNumber());
-			sendWatiNotification(customer.getPhoneNo(), customer.getName(), order.getOrderTrackingNumber());
+			String apiUrl = watiEndPointUrl + "?whatsappNumber=" + customer.getPhoneNo();
+			String subject = "order out for delivery";
+			String body = "Hi " + customer.getName() + " your order " + order.getOrderTrackingNumber() + 
+						  " is out for delivery, Thank You.";
+			emailService.sendEmail(customer.getEmail(), body, subject);
+
+			sendWatiNotification(customer.getPhoneNo(), customer.getName(), order.getOrderTrackingNumber(), apiUrl, deliveryTemplate);
 		}
 		return orders.size();
 	}
 
-	private WatiResponse sendWatiNotification(String phoneNo, String name, String orderTrackingNumber) {
+	private WatiResponse sendWatiNotification(String phoneNo, String name, String orderTrackingNumber, String apiUrl, String templateName) {
 		RestTemplate rt = new RestTemplate();
-		String apiUrl = watiEndPointUrl + "?whatsappNumber=" + phoneNo;
+		
 		WatiParameters nameParameters = new WatiParameters();
 		nameParameters.setName("name");
 		nameParameters.setValue(name);
@@ -68,17 +75,20 @@ public class NotificationServiceImpl implements NotificationService {
 		return postForEntity.getBody();
 	}
 
-	private void sendEmailNotification(String email, String name, String orderTrackingNumber) {
-		String subject = "order out for delivery";
-		String body = "Hi " + name + " your order " + orderTrackingNumber + " is out for delivery, Thank You.";
-		emailService.sendEmail(email, subject, body);
-		
-	}
-
 	@Override
+	@Scheduled(cron = "10 * * * * *")
 	public Integer sendPendingOrdersNotification() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order> pendingOrders = orderRepo.findByOrderStatus("CREATED");
+		for(Order order : pendingOrders) {
+			Customer cust = order.getCustomer();
+			String apiUrl = watiEndPointUrl + "?whatsappNumber=" + cust.getPhoneNo();
+			String subject = "Payment Reminder";
+			String body = "Hi" + cust.getName() + ", your payment is still pending for " + order.getOrderTrackingNumber();
+			emailService.sendEmail(cust.getEmail(), body, subject);
+			
+			sendWatiNotification(cust.getPhoneNo(), cust.getName(), order.getOrderTrackingNumber(), apiUrl, pendingTemplate);
+		}
+		return pendingOrders.size();
 	}
 
 }

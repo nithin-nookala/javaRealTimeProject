@@ -19,4 +19,9 @@ public class NotificationRestController {
 		notification.sendDeliveryNotification();
 		return "success";
 	}
+	@GetMapping("/pending")
+	public String pending() {
+		notification.sendPendingOrdersNotification();
+		return "success";
+	}
 }
