@@ -1,5 +1,0 @@
-package com.orderApi.request;
-
-public class PurchaseOrderRequest {
-
-}

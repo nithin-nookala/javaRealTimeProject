@@ -1,5 +1,0 @@
-package com.orderApi.service;
-
-public interface RazorpayService {
-	public String createRazorpayorder(double amount);
-}

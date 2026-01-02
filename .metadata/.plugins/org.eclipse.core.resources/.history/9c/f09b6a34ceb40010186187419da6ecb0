@@ -1,5 +1,0 @@
-package com.orderApi.dto;
-
-public class OrderItemDto {
-
-}
